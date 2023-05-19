@@ -1,6 +1,30 @@
 #enviroment{
+    position: relative;
     width: 100vw;
     height: 100vh;
-    background-color: rgb(102, 76, 196);
+    background-color: rgb(32, 24, 61);
     overflow: hidden;
+
+}
+
+.boid{
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: rgb(43, 53, 187);
+    border-radius: 50%;
+    transform: translate(-50%,-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.boid-dir{
+    position: absolute;
+    width: 10px;
+    height: 2px;
+    background-color: rgb(43, 53, 187);
+    left: 5px;
+    transform-origin: left center;
+    
 }
