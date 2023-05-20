@@ -5,9 +5,11 @@ const abruptCurveForce = 0.7;
 const margin = 30;
 const numBoids = 100;
 const drawTrail = true;
-const tailRange = 50
+const tailRange = 30
 const rangeVision = 50;
 const separationForce = 0.1;
+const aligmentForce = 0.1;
+const maxSpeed = 5;
 
 //Resizable Canvas
 
@@ -34,6 +36,8 @@ class Boid{
         this.addTrace()
         this.moveAndColide()
         this.separation(Array)
+        this.alignment(Array)
+        this.speedControl()
     }
 
     moveAndColide(){
@@ -52,6 +56,14 @@ class Boid{
             this.vy *= -1.1;
         }
         this.y += this.vy;
+    }
+
+    speedControl(){
+        const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+        if(speed >= maxSpeed){
+            this.vx = (this.vx / speed) * maxSpeed;
+            this.vy = (this.vy / speed) * maxSpeed;
+        }
     }
 
     separation(Boids){
@@ -78,6 +90,29 @@ class Boid{
             let angle = Math.atan2(sumY, sumX);
             this.vx += Math.cos(angle) * separationForce;
             this.vy += Math.sin(angle) * separationForce;
+        }
+    }
+
+    alignment(Boids){
+        let sumX = 0, 
+            sumY = 0, 
+            count = 0;
+
+        for(const boid of Boids){
+            let d = getDistance(this.x, this.y, boid.x, boid.y);
+            if(d !== 0 && d < rangeVision){
+                sumX += boid.vx;
+                sumY += boid.vy;
+                count++;
+            }
+        }
+
+        if(count > 0){
+            let avgX = sumX / count;
+            let avgY = sumY / count;
+            let angle = Math.atan2(avgY, avgX);
+            this.vx += Math.cos(angle) * aligmentForce;
+            this.vy += Math.sin(angle) * aligmentForce;
         }
     }
 
