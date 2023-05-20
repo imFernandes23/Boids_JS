@@ -9,6 +9,65 @@
 </head>
 <body id="enviroment">
     <canvas id="canvas"></canvas>
+    <button id="config" onclick="menuAct()">
+        <ion-icon name="settings-outline"></ion-icon>
+    </button>
+adapitativo
+    <div class="menu" id="menu">
+        <div class="btn-close" onclick="menuAct()">
+            <ion-icon name="close-circle-outline"></ion-icon> 
+        </div>
+        <h1>Settings</h1>
+        <div id="option">
+            <div>
+                <input type="range" id="separation" name="separation" min="0.01" max="0.5" step="0.01" value="0.15">
+                <label for="separation" id="sep">Separation: 0.15 </label>
+            </div>
+            <br>
+            <div>
+                <input type="range" id="alignment" name="alignment" min="0.01" max="0.5" step="0.01" value="0.1">
+                <label for="alignment" id="ali">Alignment: 0.1</label>
+            </div>
+            <br>
+            <div>
+                <input type="range" id="cohesion" name="cohesion" min="0.01" max="0.5" step="0.01" value="0.1">
+                <label for="cohesion" id="coh">Cohesion: 0.1 </label>
+            </div>
+            <br>
+            <div>
+                <input type="range" id="visionRange" name="visionRange" min="0" max="200" step="1" value="50">
+                <label for="visionRange" id="vRan">Vision Range: 50 </label>
+            </div>
+            <br>
+        </div>
+
+        <a href="https://github.com/imFernandes23/Boids_JS" target="_blank">by Eduardo Fernandes</a>
+    </div>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="Boids.js"></script>
+
+    <script>
+        let isOpen = false
+
+
+
+
+
+        function menuAct(){
+            const menu = document.getElementById('menu');
+            if(isOpen){
+                isOpen = !isOpen;
+                menu.classList.remove('on')
+            }else{
+                isOpen = !isOpen;
+                menu.classList.add('on')
+            }
+        }
+
+        
+
+    </script>
 </body>
 </html>

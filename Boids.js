@@ -1,17 +1,42 @@
 const canvas = document.getElementById('canvas');
 const context = canvas.getContext('2d');
 const Boids = [];
-const abruptCurveForce = 0.7;
-const margin = 300;
-const numBoids = 200;
+const margin = 150;
+const numBoids = 150;
 const drawTrail = true;
 const tailRange = 50
-const rangeVision = 60;
-const separationForce = 0.18;
-const aligmentForce = 0.1;
-const cohesionForce = 0.1;
+let rangeVision = 50
+let separationForce = 0.1
+let aligmentForce = 0.1;
+let cohesionForce = 0.1;
 const maxSpeed = 5;
-const force = 0.1;
+const force = 0.2;
+
+//Menu settings
+
+let sepValue = document.getElementById('separation');
+sepValue.addEventListener("mousemove", function(){
+    document.getElementById("sep").innerHTML = 'Separaation: ' + sepValue.value;
+    separationForce = sepValue.value;
+})
+
+let aliValue = document.getElementById('alignment');
+aliValue.addEventListener("mousemove", function(){
+    document.getElementById("ali").innerHTML = 'Alignment: ' + aliValue.value;
+    aligmentForce = aliValue.value
+})
+
+let cohValue = document.getElementById('cohesion');
+cohValue.addEventListener("mousemove", function(){
+    document.getElementById("coh").innerHTML = 'Cohesion: ' + cohValue.value;
+    cohesionForce = cohValue.value
+})
+
+let visionRang = document.getElementById('visionRange');
+visionRang.addEventListener("mousemove", function(){
+    document.getElementById("vRan").innerHTML = 'Vision Range: ' + visionRang.value;
+    rangeVision = visionRang
+})
 
 //Resizable Canvas
 
