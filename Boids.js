@@ -2,14 +2,16 @@ const canvas = document.getElementById('canvas');
 const context = canvas.getContext('2d');
 const Boids = [];
 const abruptCurveForce = 0.7;
-const margin = 30;
-const numBoids = 100;
+const margin = 300;
+const numBoids = 200;
 const drawTrail = true;
-const tailRange = 30
-const rangeVision = 50;
-const separationForce = 0.1;
+const tailRange = 50
+const rangeVision = 60;
+const separationForce = 0.18;
 const aligmentForce = 0.1;
+const cohesionForce = 0.1;
 const maxSpeed = 5;
+const force = 0.1;
 
 //Resizable Canvas
 
@@ -30,30 +32,35 @@ class Boid{
         this.vx = Math.random() * 2 - 1;
         this.vy = Math.random() * 2 - 1;
         this.history = [];
+        this.rgb = [Math.random() * 255, Math.random() * 255, Math.random() * 255]
+        this.adaptive = [Math.random() * 100]
     }
 
     update(Array) {
         this.addTrace()
-        this.moveAndColide()
         this.separation(Array)
         this.alignment(Array)
+        this.cohesion(Array)
         this.speedControl()
+        this.moveAndColide()
+        this.recolor(Array)
     }
 
     moveAndColide(){
+
         if(this.x < margin){
-            this.vx *= -1.1;
+            this.vx += force;
         }
         if(this.x > canvas.width - margin){
-            this.vx *= -1.1;
+            this.vx -= force;
         }
         this.x += this.vx;
 
         if(this.y < margin){
-            this.vy *= -1.;
+            this.vy += force;
         }
         if(this.y > canvas.height - margin){
-            this.vy *= -1.1;
+            this.vy -= force;
         }
         this.y += this.vy;
     }
@@ -116,11 +123,67 @@ class Boid{
         }
     }
 
+    cohesion(Boids){
+        let sumX = 0, 
+        sumY = 0, 
+        count = 0;
+
+        for(const boid of Boids){
+            let d = getDistance(this.x, this.y, boid.x, boid.y);
+            if(d !== 0 && d < rangeVision){
+                sumX += boid.x;
+                sumY += boid.y;
+                count++;
+            }
+        }
+
+        //centro de massa
+
+        if(count > 0 ){
+            let centerX = sumX / count;
+            let centerY = sumY / count;
+
+            let dx = centerX - this.x;
+            let dy = centerY - this.y;
+
+            let angle = Math.atan2(dy,dx);
+            this.vx += Math.cos(angle) * cohesionForce;
+            this.vy += Math.sin(angle) * cohesionForce;
+        }
+    }
+
+    recolor(Boids){
+        let r = 0, 
+            g = 0, 
+            b = 0, 
+            count = 0;
+
+        for(const boid of Boids){
+            let d = getDistance(this.x, this.y, boid.x, boid.y);
+            if(d !== 0 && d < rangeVision/2){
+                r += boid.rgb[0];
+                g += boid.rgb[1];
+                b += boid.rgb[2];
+                count++;
+            }
+        }
+
+        if(count > 0 && this.adaptive > 3){
+            let rgb = [
+                r / count,
+                g / count,
+                b / count
+            ]
+
+            this.rgb = rgb;
+        }
+    }
+
     draw(canvas){
         canvas.translate(this.x, this.y);
         canvas.rotate(Math.atan2(this.vy, this.vx));
         canvas.translate(-this.x, -this.y);
-        canvas.fillStyle = '#56A0D4';
+        canvas.fillStyle = 'rgb('+this.rgb[0]+','+this.rgb[1]+','+this.rgb[2]+')'
         canvas.beginPath();
         canvas.moveTo(this.x, this.y);
         canvas.lineTo(this.x - 15, this.y + 5);
@@ -130,7 +193,7 @@ class Boid{
         canvas.setTransform(1,0,0,1,0,0);
 
         if(drawTrail){
-            canvas.strokeStyle = '#56A0D4';
+            canvas.strokeStyle = 'rgb('+this.rgb[0]+','+this.rgb[1]+','+this.rgb[2]+')';
             canvas.beginPath();
             canvas.moveTo(this.history[0][0], this.history[0][1]);
             for (const point of this.history){
@@ -165,8 +228,8 @@ function getDistance(x1,y1,x2,y2){
 //Adicionar boids ao array
 
 for(let i = 0; i < numBoids; i++){
-    const x = getRandomNUmber(margin, canvas.width - margin);
-    const y = getRandomNUmber(margin, canvas.height - margin);
+    const x = getRandomNUmber(0, canvas.width );
+    const y = getRandomNUmber(0, canvas.height );
     Boids.push(new Boid(x, y));
 }
 
@@ -179,7 +242,6 @@ function animate(){
         boid.update(Boids);
         boid.draw(context);
     }
-    console.log(Boids)
 
     requestAnimationFrame(animate)
 }

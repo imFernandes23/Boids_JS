@@ -11,5 +11,5 @@ body, html{
 
 #canvas{
     display: block;
-    background-color: rgba(30, 29, 78, 0.795);
+    background-color: rgba(0, 0, 0, 0.795);
 }
