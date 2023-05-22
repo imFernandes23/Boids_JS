@@ -10,8 +10,10 @@ let rangeVision = parseFloat(rangeSlider.value);
 let separationForce = parseFloat(separationSlider.value);
 let aligmentForce = parseFloat(alignmentSlider.value);
 let cohesionForce = parseFloat(cohesionSlider.value)
+let circleRadius = 25
 
 const Boids = [];
+const Obstacles = [];
 const margin = 150;
 const numBoids = 250;
 const drawTrail = true;
@@ -64,13 +66,14 @@ class Boid{
         this.adaptive = [Math.random() * numBoids]
     }
 
-    update(Array) {
+    update(Array, Obstacles) {
         this.addTrace()
         this.separation(Array)
         this.alignment(Array)
         this.cohesion(Array)
         this.speedControl()
         this.moveAndColide()
+        this.avoidObstacles(Obstacles)
         this.recolor(Array)
     }
 
@@ -98,6 +101,30 @@ class Boid{
         if(speed >= maxSpeed){
             this.vx = (this.vx / speed) * maxSpeed;
             this.vy = (this.vy / speed) * maxSpeed;
+        }
+    }
+
+    avoidObstacles(Obstacles){
+        let sumX = 0,
+            sumY = 0,
+            count = 0;
+
+        for(const circle of Obstacles){
+            const dx = this.x - circle.x;
+            const dy = this.y - circle.y;
+            const d = Math.sqrt(dx*dx + dy*dy)
+
+            if( d < circle.radius + 30){
+                sumX += dx / d;
+                sumY += dy / d;
+                count++;
+            }
+        }
+
+        if(count > 0){
+            let angle = Math.atan2(sumY, sumX);
+            this.vx += Math.cos(angle) * 0.5;
+            this.vy += Math.sin(angle) * 0.5;
         }
     }
 
@@ -241,6 +268,25 @@ class Boid{
     }
 }
 
+//Função para adcionar obtaculos na tela
+
+class Obstacle{
+    constructor(x, y, r){
+        this.x = x;
+        this.y = y;
+        this.radius = r;
+    }
+
+    draw(canvas){
+        canvas.beginPath();
+        canvas.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+        canvas.fillStyle = 'grey';
+        canvas.fill();
+        canvas.closePath();
+    }
+}
+
+
 //Funções auxiliares
 
 function getRandomNUmber(min, max){
@@ -261,14 +307,29 @@ for(let i = 0; i < numBoids; i++){
     Boids.push(new Boid(x, y));
 }
 
+//Adcionar obstaculos no canvas
+
+function canvasClick(event){
+    const rect = canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    Obstacles.push(new Obstacle(x, y, circleRadius))
+}
+
+canvas.addEventListener('click', canvasClick)
 //Adcionar boids no canvas
 
 function animate(){
     context.clearRect(0, 0, canvas.width, canvas.height);
 
     for(let boid of Boids){
-        boid.update(Boids);
+        boid.update(Boids, Obstacles);
         boid.draw(context);
+    }
+
+    for(let obs of Obstacles){
+        obs.draw(context)
     }
 
 
