@@ -16,7 +16,7 @@ body, html{
 
 #canvas{
     display: block;
-    background-color: rgba(0, 0, 0, 0.795);
+    background-color: rgb(57, 56, 56);
 }
 
 #config{
@@ -42,27 +42,31 @@ ion-icon{
     position: absolute;
     top: 80px;
     right:20px;
-    width: 300px;
-    height: 60vh;
-    background-color: rgba(255,255,255,0.1);
-    border-radius: 10px;
+    width: 220px;
+    height: fit-content;
+    display: flex;
+    background-color: rgba(71, 70, 70, 0.66);
+    padding: 10px;
+    border-radius: 20px;
+    align-items:  center;
+    justify-content:  center;
+    flex-direction: column;
     visibility: hidden;
 }
 
 .menu.on{
- 
     visibility: visible;
 }
 
 .btn-close{
     position: absolute;
     right: 0px;
+    top: 0px;
 }
 
 .menu > a {
     text-decoration: none;
     color: white;
-    position: absolute;
     bottom: 10px;
     width: 100%;
     text-align: center;
@@ -70,7 +74,7 @@ ion-icon{
 
 .menu > h1 {
     width: 100%;
-    position: absolute;
+    margin: 20px;
     top: 20px;
     color: white;
     text-align: center;
@@ -82,7 +86,7 @@ ion-icon{
 }
 
 #option{
-    position: absolute;
     top: 60px;
     left: 20px;
+    width: 100%;
 }

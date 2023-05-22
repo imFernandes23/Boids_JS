@@ -17,26 +17,30 @@ adapitativo
         <div class="btn-close" onclick="menuAct()">
             <ion-icon name="close-circle-outline"></ion-icon> 
         </div>
-        <h1>Settings</h1>
+        <h1>Boids Settings</h1>
         <div id="option">
             <div>
-                <input type="range" id="separation" name="separation" min="0.01" max="0.5" step="0.01" value="0.15">
-                <label for="separation" id="sep">Separation: 0.15 </label>
+                <input type="range" id="separation" name="separation" min="0" max="1" step="0.01" value="0.1">
+                <br>
+                <label for="separation" id="sep">Separation: 0.1</label>
             </div>
             <br>
             <div>
-                <input type="range" id="alignment" name="alignment" min="0.01" max="0.5" step="0.01" value="0.1">
+                <input type="range" id="alignment" name="alignment" min="0" max="1" step="0.01" value="0.1">
+                <br>
                 <label for="alignment" id="ali">Alignment: 0.1</label>
             </div>
             <br>
             <div>
-                <input type="range" id="cohesion" name="cohesion" min="0.01" max="0.5" step="0.01" value="0.1">
-                <label for="cohesion" id="coh">Cohesion: 0.1 </label>
+                <input type="range" id="cohesion" name="cohesion" min="0" max="1" step="0.01" value="0.1">
+                <br>
+                <label for="cohesion" id="coh">Cohesion: 0.1</label>
             </div>
             <br>
             <div>
                 <input type="range" id="visionRange" name="visionRange" min="0" max="200" step="1" value="50">
-                <label for="visionRange" id="vRan">Vision Range: 50 </label>
+                <br>
+                <label for="visionRange" id="vRan">Vision Range: 50</label>
             </div>
             <br>
         </div>

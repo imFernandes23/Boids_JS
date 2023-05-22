@@ -1,41 +1,44 @@
 const canvas = document.getElementById('canvas');
 const context = canvas.getContext('2d');
+
+const separationSlider = document.getElementById('separation')
+const alignmentSlider = document.getElementById('alignment')
+const cohesionSlider = document.getElementById('cohesion')
+const rangeSlider = document.getElementById('visionRange')
+
+let rangeVision = parseFloat(rangeSlider.value);
+let separationForce = parseFloat(separationSlider.value);
+let aligmentForce = parseFloat(alignmentSlider.value);
+let cohesionForce = parseFloat(cohesionSlider.value)
+
 const Boids = [];
 const margin = 150;
-const numBoids = 150;
+const numBoids = 250;
 const drawTrail = true;
 const tailRange = 50
-let rangeVision = 50
-let separationForce = 0.1
-let aligmentForce = 0.1;
-let cohesionForce = 0.1;
 const maxSpeed = 5;
 const force = 0.2;
 
 //Menu settings
 
-let sepValue = document.getElementById('separation');
-sepValue.addEventListener("mousemove", function(){
-    document.getElementById("sep").innerHTML = 'Separaation: ' + sepValue.value;
-    separationForce = sepValue.value;
+separationSlider.addEventListener('input', function(){
+    separationForce = parseFloat(separationSlider.value);
+    document.getElementById('sep').innerHTML = 'Separation: ' + separationSlider.value
 })
 
-let aliValue = document.getElementById('alignment');
-aliValue.addEventListener("mousemove", function(){
-    document.getElementById("ali").innerHTML = 'Alignment: ' + aliValue.value;
-    aligmentForce = aliValue.value
+alignmentSlider.addEventListener('input', function(){
+    aligmentForce = parseFloat(alignmentSlider.value);
+    document.getElementById('ali').innerHTML = 'Aliginment: ' + alignmentSlider.value
 })
 
-let cohValue = document.getElementById('cohesion');
-cohValue.addEventListener("mousemove", function(){
-    document.getElementById("coh").innerHTML = 'Cohesion: ' + cohValue.value;
-    cohesionForce = cohValue.value
+cohesionSlider.addEventListener('input', function(){
+    cohesionForce = parseFloat(cohesionSlider.value);
+    document.getElementById('coh').innerHTML = 'Cohesion: ' + cohesionSlider.value
 })
 
-let visionRang = document.getElementById('visionRange');
-visionRang.addEventListener("mousemove", function(){
-    document.getElementById("vRan").innerHTML = 'Vision Range: ' + visionRang.value;
-    rangeVision = visionRang
+rangeSlider.addEventListener('input', function(){
+    rangeVision = parseFloat(rangeSlider.value);
+    document.getElementById('vRan').innerHTML = 'Vision Range: ' + rangeSlider.value
 })
 
 //Resizable Canvas
@@ -58,7 +61,7 @@ class Boid{
         this.vy = Math.random() * 2 - 1;
         this.history = [];
         this.rgb = [Math.random() * 255, Math.random() * 255, Math.random() * 255]
-        this.adaptive = [Math.random() * 100]
+        this.adaptive = [Math.random() * numBoids]
     }
 
     update(Array) {
@@ -268,7 +271,9 @@ function animate(){
         boid.draw(context);
     }
 
-    requestAnimationFrame(animate)
+
+    setInterval(requestAnimationFrame(animate), 30)
+
 }
 
 animate()
