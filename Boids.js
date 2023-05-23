@@ -333,8 +333,8 @@ function animate(){
     }
 
 
-    setInterval(requestAnimationFrame(animate), 30)
+    requestAnimationFrame(animate)
 
 }
 
-animate()
+requestAnimationFrame(animate)
