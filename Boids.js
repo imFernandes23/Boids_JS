@@ -67,13 +67,13 @@ class Boid{
     }
 
     update(Array, Obstacles) {
+        this.avoidObstacles(Obstacles)
         this.addTrace()
         this.separation(Array)
         this.alignment(Array)
         this.cohesion(Array)
         this.speedControl()
         this.moveAndColide()
-        this.avoidObstacles(Obstacles)
         this.recolor(Array)
     }
 
@@ -114,7 +114,7 @@ class Boid{
             const dy = this.y - circle.y;
             const d = Math.sqrt(dx*dx + dy*dy)
 
-            if( d < circle.radius + 30){
+            if( d < rangeVision + circle.radius ){
                 sumX += dx / d;
                 sumY += dy / d;
                 count++;
@@ -123,8 +123,8 @@ class Boid{
 
         if(count > 0){
             let angle = Math.atan2(sumY, sumX);
-            this.vx += Math.cos(angle) * 0.5;
-            this.vy += Math.sin(angle) * 0.5;
+            this.vx += Math.cos(angle) * 0.4;
+            this.vy += Math.sin(angle) * 0.4;
         }
     }
 
